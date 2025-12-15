@@ -10,6 +10,7 @@ module CssPropertySorter
       def initialize(violation_fix_issues, number_of_issues_to_show: NUMBER_OF_ISSUES_TO_SHOW)
         @violation_fix_issues, @number_of_issues_to_show = violation_fix_issues, number_of_issues_to_show
         super("\n**Issues detected**\n" + pretty_issues)
+        set_backtrace([]) # This error is for issues, no need for a backtrace.
       end
 
       private
