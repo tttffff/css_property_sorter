@@ -3,12 +3,17 @@
 module CssPropertySorter
   module Utils
     class Inflector
-      INFLECTIONS_KLASS = Struct.new('Inflection', :size, :have, :s, :es)
-      SINGULAR = ["has", "", ""]
-      PLURAL = ["have", "s", "es"]
+      # This approach will become a pain at some point, but it is fine at the minute.
+      INFLECTIONS_KLASS = Struct.new('Inflection', :size, :have, :s, :es, :first, :all)
+      PLURAL = ["have", "s", "es", "First", "All"]
+      SINGULAR = ["has", "", "", "Only", "Only"]
+
+      def self.call(items, &block)
+        new(items).inflect(&block)
+      end
 
       def self.[](items, &block)
-        puts new(items).inflect(&block)
+        puts call(items, &block)
       end
 
       attr_reader :inflections

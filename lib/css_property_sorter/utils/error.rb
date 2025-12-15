@@ -9,15 +9,22 @@ module CssPropertySorter
 
       def initialize(violation_fix_issues, number_of_issues_to_show: NUMBER_OF_ISSUES_TO_SHOW)
         @violation_fix_issues, @number_of_issues_to_show = violation_fix_issues, number_of_issues_to_show
-        super(pretty_issues)
+        super("\n**Issues detected**\n" + pretty_issues)
       end
 
       private
 
       def pretty_issues
+        return "" unless number_of_issues_to_show.positive?
         issues_to_print = violation_fix_issues[0...number_of_issues_to_show]
-        Inflector[issues_to_print] { "\n\nFirst #{size} issue#{s}\n\n"}
-        issues_to_print.map do |issue|
+
+        headline = if issues_to_print == violation_fix_issues
+          Inflector.call(issues_to_print) { "\n#{all} #{size} issue#{s}:\n\n"}
+        else
+          Inflector.call(issues_to_print) { "\n#{first} #{size} issue#{s}:\n\n"}
+        end
+
+        headline + issues_to_print.map do |issue|
           issue_info = issue.issue_info
           "#{issue_info[:message]}\n#{issue_info[:css_section]}"
         end.join("\n\n")

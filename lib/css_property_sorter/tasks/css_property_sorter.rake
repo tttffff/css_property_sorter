@@ -6,10 +6,14 @@ CssPropertySorter::RakeHelpers[self, "Look for violations and attempt to fix the
   violation_fixes = violations_enum.map { CssPropertySorter::Utils::FixViolation.call(_1) }
   issues, fixes = violation_fixes.partition(&:issue?) # We collect on the enum here.
 
-  CssPropertySorter::Utils::Inflector[fixes] { "There #{have} been: #{size} fix#{es}" }
-  CssPropertySorter::Utils::Inflector[issues] { "There #{have} been: #{size} issue#{s}" }
+  if issues.any?
+    error = CssPropertySorter::Utils::Error.new(issues)
+    raise_on_error = ENV.fetch("CPS_RAISE", "false") == "true"
+    raise_on_error ? raise(error) : puts(error.message)
+  end
 
-  raise CssPropertySorter::Utils::Error.new(issues) if issues.any?
+  CssPropertySorter::Utils::Inflector[fixes] { "\nThere #{have} been: #{size} fix#{es}" }
+  CssPropertySorter::Utils::Inflector[issues] { "There #{have} been: #{size} issue#{s}\n\n" }
 end
 
 # git add .
