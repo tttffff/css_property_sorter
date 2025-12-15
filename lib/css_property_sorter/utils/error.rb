@@ -3,7 +3,7 @@
 module CssPropertySorter
   module Utils
     class Error < StandardError
-      NUMBER_OF_ISSUES_TO_SHOW = ENV.fetch("CPS_NITS", 5).to_i # Ha
+      NUMBER_OF_ISSUES_TO_SHOW = ENV.fetch("CPS_NITS", 50).to_i # Ha
 
       attr_reader :violation_fix_issues, :number_of_issues_to_show
 
@@ -25,8 +25,7 @@ module CssPropertySorter
         end
 
         headline + issues_to_print.map do |issue|
-          issue_info = issue.issue_info
-          "#{issue_info[:message]}\n#{issue_info[:css_section]}"
+          "File: #{issue[:file_path]}\n#{issue[:message]}"
         end.join("\n\n")
       end
     end

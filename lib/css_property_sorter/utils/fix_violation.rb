@@ -22,20 +22,18 @@ module CssPropertySorter
         new(violation).tap(&:fix)
       end
 
-      attr_reader :issue_info, :violation, :issue_messages
+      attr_reader :issue, :violation, :issue_messages
 
       def initialize(violation, issue_messages: ISSUE_MESSAGES)
         @violation, @issue_messages = violation, issue_messages
       end
 
       def issue?
-        @issue_info
+        @issue
       end
 
       def fix
-        File.open(violation.file_path, "rb+") do |css_file|
-          css_file.seek(violation.start_byte)
-          css_section = css_file.read(violation.number_of_bytes)
+        RulesetIo.new(violation).io do |css_section, ruleset_writer|
           simple_breakdown = css_section.match(/\A(.*?\{+\n)(.*)(\n\s*\}\n)\Z/m)
           break set_issue_info(:breakdown, css_section) unless simple_breakdown
           selector_line, properties, closing_line = simple_breakdown.captures
@@ -43,15 +41,14 @@ module CssPropertySorter
           new_properties = expected_properties(indent)
           new_css_section = selector_line + new_properties + closing_line
           break set_issue_info(:structure_mismatch, css_section) unless css_section.size == new_css_section.size
-          css_file.seek(violation.start_byte)
-          css_file.write(new_css_section)
+          ruleset_writer.call(new_css_section)
         end
       end
 
       private
 
       def set_issue_info(issue_type, css_section)
-        @issue_info = {file_path: violation.file_path, message: issue_messages[issue_type], css_section:}
+        @issue = {file_path: violation.file_path, message: "#{issue_messages[issue_type]}\n#{css_section}"}
       end
 
       def expected_properties(indent)
