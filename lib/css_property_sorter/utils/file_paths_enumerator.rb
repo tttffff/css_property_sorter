@@ -3,7 +3,7 @@
 module CssPropertySorter
   module Utils
     class FilePathsEnumerator
-      WANTED_EXTENSIONS = %w[css scss sass less].freeze
+      WANTED_EXTENSIONS = %w[css scss sass less].to_set.freeze
 
       def self.call
         new.git_file_paths_enumerator
