@@ -28,4 +28,5 @@ Gem::Specification.new do |spec|
   spec.add_dependency "rake"
   spec.add_dependency "css_parser"
   spec.add_dependency "git"
+  spec.add_development_dependency "debug"
 end

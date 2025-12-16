@@ -30,7 +30,12 @@ GEM
     connection_pool (3.0.2)
     css_parser (1.21.1)
       addressable
+    date (3.5.1)
+    debug (1.11.0)
+      irb (~> 1.10)
+      reline (>= 0.3.8)
     drb (2.2.3)
+    erb (6.0.1)
     git (4.0.6)
       activesupport (>= 5.0)
       addressable (~> 2.8)
@@ -38,16 +43,35 @@ GEM
       rchardet (~> 1.9)
     i18n (1.14.7)
       concurrent-ruby (~> 1.0)
+    io-console (0.8.2)
+    irb (1.15.3)
+      pp (>= 0.6.0)
+      rdoc (>= 4.0.0)
+      reline (>= 0.4.2)
     json (2.18.0)
     logger (1.7.0)
     minitest (5.27.0)
+    pp (0.6.3)
+      prettyprint
+    prettyprint (0.2.0)
     process_executer (4.0.0)
       track_open_instances (~> 0.1)
+    psych (5.3.0)
+      date
+      stringio
     public_suffix (7.0.0)
     rake (13.3.1)
     rchardet (1.10.0)
+    rdoc (6.17.0)
+      erb
+      psych (>= 4.0.0)
+      tsort
+    reline (0.6.3)
+      io-console (~> 0.5)
     securerandom (0.4.1)
+    stringio (3.1.9)
     track_open_instances (0.1.15)
+    tsort (0.2.0)
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
     uri (1.1.1)
@@ -58,6 +82,7 @@ PLATFORMS
 
 DEPENDENCIES
   css_property_sorter!
+  debug
 
 BUNDLED WITH
    2.5.23

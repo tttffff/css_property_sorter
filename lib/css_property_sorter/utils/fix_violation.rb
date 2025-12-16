@@ -34,7 +34,7 @@ module CssPropertySorter
 
       def fix
         RulesetIo.new(violation).io do |css_section, ruleset_writer|
-          simple_breakdown = css_section.match(/\A(.*?\{+\n)(.*)(\n\s*\}\n)\Z/m)
+          simple_breakdown = css_section.match(/\A(.*?\{+\n)(.*?)(\s*\}?\s*)\Z/m)
           break set_issue_info(:breakdown, css_section) unless simple_breakdown
           selector_line, properties, closing_line = simple_breakdown.captures
           indent = properties[/\s+/] # Take the indent from the first item
